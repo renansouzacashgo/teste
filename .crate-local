@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Diretório onde os crates locais serão armazenados
+LOCAL_CRATES_DIR="/home/ubuntu/local-crates"
+
+# Caminho do projeto teste
+TESTE_DIR="/home/ubuntu/teste"
+
+# Criar o diretório se não existir
+mkdir -p "$LOCAL_CRATES_DIR"
+
+# Entrar no diretório do projeto teste
+cd "$TESTE_DIR" || exit 1
+
+# Empacotar o crate teste
+echo "Empacotando 'teste'..."
+cargo package || exit 1
+
+# Mover o pacote para o diretório de crates locais
+echo "Movendo pacote para '$LOCAL_CRATES_DIR'..."
+mv target/package/teste-*.crate "$LOCAL_CRATES_DIR/" || exit 1
+
+# Voltar para o projeto shreds
+cd "/home/ubuntu/shreds" || exit 1
+
+# Atualizar as dependências do Cargo.lock
+echo "Atualizando dependências..."
+cargo update || exit 1
+
+# Compilar o projeto shreds
+echo "Compilando 'shreds'..."
+cargo build || exit 1
+
+echo "Processo concluído!"
