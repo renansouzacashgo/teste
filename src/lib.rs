@@ -22,16 +22,13 @@ use carbon_raydium_amm_v4_decoder::instructions::swap_base_out::SwapBaseOut;
 use carbon_raydium_amm_v4_decoder::instructions::RaydiumAmmV4Instruction;
 use carbon_raydium_amm_v4_decoder::RaydiumAmmV4Decoder;
 use serde::{Deserialize, Serialize};
-use serde_json::json;
-use solana_sdk::account::Account;
 use solana_sdk::instruction::{AccountMeta, Instruction};
 use solana_sdk::pubkey::Pubkey;
-use std::convert::TryInto;
-use std::mem::size_of;
-use std::str::FromStr;
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SwapTransaction {
+    pub amm: Option<Pubkey>,
     pub in_amount: u64,
     pub out_amount: Option<u64>,
     pub mint_token_in: Option<Pubkey>,
@@ -66,9 +63,10 @@ pub fn decode_raydium_instruction(
         Some(decoded_instruction) => match decoded_instruction.data {
             RaydiumAmmV4Instruction::SwapBaseIn(ref swap_data) => {
                 let arranged_accounts =
-                    SwapBaseIn::arrange_accounts(&instruction.accounts).unwrap();
-
-                let swap = SwapTransaction {
+                    SwapBaseIn::arrange_accounts(&instruction.accounts).unwrap();  
+                    
+               let swap = SwapTransaction {
+                    amm: Some(arranged_accounts.amm),
                     in_amount: swap_data.amount_in,
                     out_amount: Some(swap_data.minimum_amount_out),
                     mint_token_in: None,
@@ -83,6 +81,7 @@ pub fn decode_raydium_instruction(
                 let arranged_accounts =
                     SwapBaseOut::arrange_accounts(&instruction.accounts).unwrap();
                 let swap = SwapTransaction {
+                    amm: Some(arranged_accounts.amm),
                     in_amount: swap_data.amount_out,
                     out_amount: Some(swap_data.amount_out),
                     mint_token_in: None,
@@ -128,9 +127,11 @@ pub fn decode_jupiter_instruction(
     match decoder.decode_instruction(&instruction) {
         Some(decoded_instruction) => match decoded_instruction.data {
             JupiterSwapInstruction::Route(ref data) => {
+                println!("Instrução decodificada: {:?}", decoded_instruction);
                 let arranged_accounts = Route::arrange_accounts(&instruction.accounts).unwrap();
-
+                
                 let swap = SwapTransaction {
+                    amm: None,
                     in_amount: data.in_amount,
                     out_amount: Some(data.quoted_out_amount),
                     mint_token_in: None,
@@ -144,8 +145,9 @@ pub fn decode_jupiter_instruction(
             JupiterSwapInstruction::SharedAccountsExactOutRoute(ref data) => {
                 let arranged_accounts =
                     SharedAccountsExactOutRoute::arrange_accounts(&instruction.accounts).unwrap();
-
+                
                 let swap = SwapTransaction {
+                    amm: None,
                     in_amount: data.out_amount,
                     out_amount: Some(data.out_amount),
                     mint_token_in: Some(arranged_accounts.source_mint),
@@ -161,6 +163,7 @@ pub fn decode_jupiter_instruction(
                     SharedAccountsRoute::arrange_accounts(&instruction.accounts).unwrap();
 
                 let swap = SwapTransaction {
+                    amm: None,
                     in_amount: data.in_amount,
                     out_amount: Some(data.quoted_out_amount),
                     mint_token_in: Some(arranged_accounts.source_mint),
@@ -173,6 +176,7 @@ pub fn decode_jupiter_instruction(
             }
             JupiterSwapInstruction::SwapEvent(ref data) => {
                 let swap = SwapTransaction {
+                    amm: None,
                     in_amount: data.input_amount,
                     out_amount: Some(data.output_amount),
                     mint_token_in: Some(data.input_mint),
@@ -223,6 +227,7 @@ pub fn decode_okx_instruction(
                     let arranged_accounts = Swap::arrange_accounts(&instruction.accounts).unwrap();
 
                     let swap = SwapTransaction {
+                        amm: None,
                         in_amount: swap_data.data.amount_in,
                         out_amount: Some(swap_data.data.expect_amount_out),
                         mint_token_in: Some(arranged_accounts.source_mint),
@@ -237,6 +242,7 @@ pub fn decode_okx_instruction(
                     let arranged_accounts = Swap2::arrange_accounts(&instruction.accounts).unwrap();
 
                     let swap = SwapTransaction {
+                        amm: None,
                         in_amount: swap_data.data.amount_in,
                         out_amount: Some(swap_data.data.expect_amount_out),
                         mint_token_in: Some(arranged_accounts.source_mint),
@@ -252,6 +258,7 @@ pub fn decode_okx_instruction(
                         CommissionSplSwap::arrange_accounts(&instruction.accounts).unwrap();
 
                     let swap = SwapTransaction {
+                        amm: None,
                         in_amount: swap_data.data.amount_in,
                         out_amount: Some(swap_data.data.expect_amount_out),
                         mint_token_in: Some(arranged_accounts.source_mint),
@@ -267,6 +274,7 @@ pub fn decode_okx_instruction(
                         CommissionSplSwap2::arrange_accounts(&instruction.accounts).unwrap();
 
                     let swap = SwapTransaction {
+                        amm: None,
                         in_amount: swap_data.data.amount_in,
                         out_amount: Some(swap_data.data.expect_amount_out),
                         mint_token_in: Some(arranged_accounts.source_mint),
