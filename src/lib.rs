@@ -127,7 +127,6 @@ pub fn decode_jupiter_instruction(
     match decoder.decode_instruction(&instruction) {
         Some(decoded_instruction) => match decoded_instruction.data {
             JupiterSwapInstruction::Route(ref data) => {
-                println!("Instrução decodificada: {:?}", decoded_instruction);
                 let arranged_accounts = Route::arrange_accounts(&instruction.accounts).unwrap();
                 
                 let swap = SwapTransaction {
@@ -221,7 +220,6 @@ pub fn decode_okx_instruction(
 
     match decoder.decode_instruction(&instruction) {
         Some(decoded_instruction) => {
-            println!("Instrução decodificada: {:?}", decoded_instruction);
             match decoded_instruction.data {
                 OkxDexInstruction::Swap(ref swap_data) => {
                     let arranged_accounts = Swap::arrange_accounts(&instruction.accounts).unwrap();
