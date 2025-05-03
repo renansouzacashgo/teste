@@ -75,53 +75,54 @@ fn main() {
 
     let program_id_raydium = Pubkey::from_str("675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"); // Exemplo de PROGRA
 
-    let swap_transaction = match teste::decode_raydium_instruction(
-        data_simple_2.to_vec(),
-        accounts_raydium.to_vec(),
-        program_id_raydium.unwrap(),
-    ) {
-        Some(transaction) => {
-            println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
-        }
-        None => {
-            println!("❌ Erro: Falha ao decodificar a instrução Raydium.");
-            return; // Ou retorne um valor padrão
-        }
-    };
+    // let swap_transaction = match teste::decode_raydium_instruction(
+    //     data_simple_2.to_vec(),
+    //     accounts_raydium.to_vec(),
+    //     program_id_raydium.unwrap(),
+    // ) {
+    //     Some(transaction) => {
+    //         println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
+    //     }
+    //     None => {
+    //         println!("❌ Erro: Falha ao decodificar a instrução Raydium.");
+    //         return; // Ou retorne um valor padrão
+    //     }
+    // };
 
     // println!("{}", serde_json::to_string_pretty(&parse_swap_data(&data_simple).unwrap()).unwrap());
     // println!("{}", serde_json::to_string_pretty(&parse_swap_jupiter(&data_complex).unwrap()).unwrap());
     // println!("{}", serde_json::to_string_pretty(&parse_swap_raydium2(&data_simple_2).unwrap()).unwrap());
 
     //https://solscan.io/tx/3mbhjY6S8XpJENThAgfNP2gEp8UNmLXCk5hCNff7KkErWXvKi2X6JUaaNYapvR4EF9fCc41G4P5GKimeAaBouFvM
-    let data_complex_jupiter: [u8; 43] = [
-        229, 23, 203, 151, 122, 227, 173, 42, 3, 0, 0, 0, 7, 100, 0, 1, 46, 100, 1, 2, 50, 100, 2,
-        0, 1, 224, 83, 3, 0, 0, 0, 0, 170, 65, 84, 3, 0, 0, 0, 0, 0, 0, 0,
-    ];
+    // let data_complex_jupiter: [u8; 43] = [
+    //     229, 23, 203, 151, 122, 227, 173, 42, 3, 0, 0, 0, 7, 100, 0, 1, 46, 100, 1, 2, 50, 100, 2,
+    //     0, 1, 224, 83, 3, 0, 0, 0, 0, 170, 65, 84, 3, 0, 0, 0, 0, 0, 0, 0,
+    // ];
+
+    // let data_complex_jupiter=  vec![41, 108, 130, 211, 98, 89, 182, 101, 169, 49, 143, 75, 98, 95, 15, 68, 35, 233, 226, 250, 169, 21, 161, 56, 226, 38, 143, 187, 226, 60, 39, 63, 92, 158, 66, 32, 72, 241, 80, 72, 22, 27, 103, 124, 116, 170, 155, 100];
+    let data_complex_jupiter = vec![193, 32, 155, 51, 65, 214, 156, 129, 6, 2, 0, 0, 0, 7, 100, 0, 1, 72, 100, 1, 2, 213, 240, 86, 18, 134, 0, 0, 0, 208, 8, 105, 243, 3, 0, 0, 0, 84, 1, 85];
 
     let program_id_jupiter = Pubkey::from_str("JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4"); // Exemplo de PROGRA
 
     let accounts_jupiter = [
-        Pubkey::from_str("67aEBh9Eu4cEajDBMZ4PszgWaxZ4a6YPMsdfPMAGNdEz").unwrap(),
-        Pubkey::from_str("AHDEyJPn3HpgpfoXaFgVn7qzwTKpz5CVkPVoDAPJLi2Y").unwrap(),
-        Pubkey::from_str("EmqCo65C5i4aoTbtyPwW9iGfqmmPcxLATmyoPPjzGEJv").unwrap(),
-        Pubkey::from_str("DeRSrVVXhwjE4URD8AsKqyZrzWVzEUeFEV3HNPcsx4cb").unwrap(),
-        Pubkey::from_str("2uvJ73NVLvdnkdVYwwwDRmPb3R6gxc1MA2zY7g6ekYxz").unwrap(),
-        Pubkey::from_str("4GCPz8jmdfuNYvz8AmVrGa2ZjUijS4wZK9skSDWQd9ne").unwrap(),
-        Pubkey::from_str("3eY7p2T7dy4jkasJjRZDqgFBiz7TwyTc6sbUonWvrmPA").unwrap(),
-        Pubkey::from_str("6LHmrpEGr8PtiJNJkGEC6QGQMo2E4XTQ3Cfgp4zCvT3n").unwrap(),
-        Pubkey::from_str("CebN5WGQ4jvEPvsVU4EoHEpgzq1VV7AbicfhtW4xC9iM").unwrap(),
-        Pubkey::from_str("EYtSBZAGbLPpo4A648kYYBHvJYkCBdZy1UzG8WFvj7X6").unwrap(),
-        Pubkey::from_str("bjSFxomudZUNJ5azMhE481evSW8UWPnHxPmXQCF8zek").unwrap(),
-        Pubkey::from_str("DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL").unwrap(),
-        Pubkey::from_str("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL").unwrap(),
+        Pubkey::from_str("9CVVvykRbB4zggp1vnZUKqTBKw1742XJ1FVE8rGfAixV").unwrap(),
+        Pubkey::from_str("MjKAkypjNtPcFdyjc4KoderNKnmVuxvzWGxb94WfxZq").unwrap(),
+        Pubkey::from_str("2ndNJTz8Xc7mPYnv5yd1oMF8HYFb9CA7BRRe1cccJrUj").unwrap(),
+        Pubkey::from_str("8JpRt3vBn7VsoESnNrWU1EAGm6Ha8pvAVCvHVLLSrx7Q").unwrap(),
+        Pubkey::from_str("9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8").unwrap(),
+        Pubkey::from_str("A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN").unwrap(),
+        Pubkey::from_str("FGptqdxjahafaCzpZ1T6EDtCzYMv7Dyn5MgBLyB3VUFW").unwrap(),
+        Pubkey::from_str("G55KMKRm78kjeswHep9gctN1Tj8KXh35Fs1jDdFFBUuZ").unwrap(),
+        Pubkey::from_str("JAF1x1owVYpJQAU6iwZfmgRKR5iaQzqXQ9tzXd16DqPo").unwrap(),
         Pubkey::from_str("11111111111111111111111111111111").unwrap(),
-        Pubkey::from_str("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").unwrap(),
-        Pubkey::from_str("h5NciPdMZ5QCB5BYETJMYBMpVx9ZuitR6HcVjyBhood").unwrap(),
-        Pubkey::from_str("AwBDLyCE4U9UGFAryq88uuw5Cp7ZGjWYgwGTAgKjpump").unwrap(),
+        Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
         Pubkey::from_str("JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4").unwrap(),
-        Pubkey::from_str("C7Cx2pMLtjybS3mDKSfsBj4zQ3PRZGkKt7RCYTTbCSx2").unwrap(),
-        Pubkey::from_str("4wTV1YmiEkRvAtNtsSGPtUrqRYQMe5SKy2uB4Jjaxnjf").unwrap(),
+        Pubkey::from_str("h5NciPdMZ5QCB5BYETJMYBMpVx9ZuitR6HcVjyBhood").unwrap(),
+        Pubkey::from_str("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL").unwrap(),
+        Pubkey::from_str("AVmoTthdrX6tKt4nDjco2D775W2YK3sDhxPcMmzUAmTY").unwrap(),
+        Pubkey::from_str("D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf").unwrap(),
+        Pubkey::from_str("GjCj8ZMPr13p5XTJJALa7QoRJ1NUWgNcnmhWVgLsQEDr").unwrap(),
+        Pubkey::from_str("J2nUHEAgZFRyuJbFjdqPrAa9gyWDuc7hErtDQHPhsYRp").unwrap(),
     ];
 
     let swap_transaction = match teste::decode_jupiter_instruction(
@@ -133,7 +134,7 @@ fn main() {
             println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
         }
         None => {
-            println!("❌ Erro: Falha ao decodificar a instrução Raydium.");
+            println!("❌ Erro: Falha ao decodificar a instrução Jupiter.");
             return; // Ou retorne um valor padrão
         }
     };

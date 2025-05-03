@@ -6,6 +6,7 @@ use carbon_jupiter_swap_decoder::accounts::JupiterSwapAccount;
 use carbon_jupiter_swap_decoder::instructions::route::Route;
 use carbon_jupiter_swap_decoder::instructions::shared_accounts_exact_out_route::SharedAccountsExactOutRoute;
 use carbon_jupiter_swap_decoder::instructions::shared_accounts_route::SharedAccountsRoute;
+use carbon_jupiter_swap_decoder::instructions::exact_out_route::ExactOutRoute;
 use carbon_jupiter_swap_decoder::instructions::swap_event::SwapEvent;
 use carbon_jupiter_swap_decoder::instructions::JupiterSwapInstruction;
 use carbon_jupiter_swap_decoder::types;
@@ -24,7 +25,7 @@ use carbon_raydium_amm_v4_decoder::RaydiumAmmV4Decoder;
 use serde::{Deserialize, Serialize};
 use solana_sdk::instruction::{AccountMeta, Instruction};
 use solana_sdk::pubkey::Pubkey;
-
+use std::any::type_name;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SwapTransaction {
@@ -63,9 +64,9 @@ pub fn decode_raydium_instruction(
         Some(decoded_instruction) => match decoded_instruction.data {
             RaydiumAmmV4Instruction::SwapBaseIn(ref swap_data) => {
                 let arranged_accounts =
-                    SwapBaseIn::arrange_accounts(&instruction.accounts).unwrap();  
-                    
-               let swap = SwapTransaction {
+                    SwapBaseIn::arrange_accounts(&instruction.accounts).unwrap();
+
+                let swap = SwapTransaction {
                     amm: Some(arranged_accounts.amm),
                     in_amount: swap_data.amount_in,
                     out_amount: Some(swap_data.minimum_amount_out),
@@ -125,71 +126,89 @@ pub fn decode_jupiter_instruction(
     };
 
     match decoder.decode_instruction(&instruction) {
-        Some(decoded_instruction) => match decoded_instruction.data {
-            JupiterSwapInstruction::Route(ref data) => {
-                let arranged_accounts = Route::arrange_accounts(&instruction.accounts).unwrap();
-                
-                let swap = SwapTransaction {
-                    amm: None,
-                    in_amount: data.in_amount,
-                    out_amount: Some(data.quoted_out_amount),
-                    mint_token_in: None,
-                    mint_token_out: Some(arranged_accounts.destination_mint),
-                    mint_token_account_in: Some(arranged_accounts.user_source_token_account),
-                    mint_token_account_out: Some(arranged_accounts.user_destination_token_account),
-                };
+        Some(decoded_instruction) => {
+            match decoded_instruction.data {
+                JupiterSwapInstruction::Route(ref data) => {
+                    let arranged_accounts = Route::arrange_accounts(&instruction.accounts).unwrap();
 
-                return Some(swap);
-            }
-            JupiterSwapInstruction::SharedAccountsExactOutRoute(ref data) => {
-                let arranged_accounts =
-                    SharedAccountsExactOutRoute::arrange_accounts(&instruction.accounts).unwrap();
-                
-                let swap = SwapTransaction {
-                    amm: None,
-                    in_amount: data.out_amount,
-                    out_amount: Some(data.out_amount),
-                    mint_token_in: Some(arranged_accounts.source_mint),
-                    mint_token_out: Some(arranged_accounts.destination_mint),
-                    mint_token_account_in: Some(arranged_accounts.source_token_account),
-                    mint_token_account_out: Some(arranged_accounts.destination_token_account),
-                };
+                    let swap = SwapTransaction {
+                        amm: None,
+                        in_amount: data.in_amount,
+                        out_amount: Some(data.quoted_out_amount),
+                        mint_token_in: None,
+                        mint_token_out: Some(arranged_accounts.destination_mint),
+                        mint_token_account_in: Some(arranged_accounts.user_source_token_account),
+                        mint_token_account_out: Some(
+                            arranged_accounts.user_destination_token_account,
+                        ),
+                    };
 
-                return Some(swap);
-            }
-            JupiterSwapInstruction::SharedAccountsRoute(ref data) => {
-                let arranged_accounts =
-                    SharedAccountsRoute::arrange_accounts(&instruction.accounts).unwrap();
+                    return Some(swap);
+                }
+                JupiterSwapInstruction::SharedAccountsExactOutRoute(ref data) => {
+                    let arranged_accounts =
+                        SharedAccountsExactOutRoute::arrange_accounts(&instruction.accounts)
+                            .unwrap();
 
-                let swap = SwapTransaction {
-                    amm: None,
-                    in_amount: data.in_amount,
-                    out_amount: Some(data.quoted_out_amount),
-                    mint_token_in: Some(arranged_accounts.source_mint),
-                    mint_token_out: Some(arranged_accounts.destination_mint),
-                    mint_token_account_in: Some(arranged_accounts.source_token_account),
-                    mint_token_account_out: Some(arranged_accounts.destination_token_account),
-                };
+                    let swap = SwapTransaction {
+                        amm: None,
+                        in_amount: data.out_amount,
+                        out_amount: Some(data.out_amount),
+                        mint_token_in: Some(arranged_accounts.source_mint),
+                        mint_token_out: Some(arranged_accounts.destination_mint),
+                        mint_token_account_in: Some(arranged_accounts.source_token_account),
+                        mint_token_account_out: Some(arranged_accounts.destination_token_account),
+                    };
 
-                return Some(swap);
-            }
-            JupiterSwapInstruction::SwapEvent(ref data) => {
-                let swap = SwapTransaction {
-                    amm: None,
-                    in_amount: data.input_amount,
-                    out_amount: Some(data.output_amount),
-                    mint_token_in: Some(data.input_mint),
-                    mint_token_out: Some(data.output_mint),
-                    mint_token_account_in: None,
-                    mint_token_account_out: None,
-                };
+                    return Some(swap);
+                }
+                JupiterSwapInstruction::SharedAccountsRoute(ref data) => {
+                    let arranged_accounts =
+                        SharedAccountsRoute::arrange_accounts(&instruction.accounts).unwrap();
+                    let swap = SwapTransaction {
+                        amm: None,
+                        in_amount: data.in_amount,
+                        out_amount: Some(data.quoted_out_amount),
+                        mint_token_in: Some(arranged_accounts.source_mint),
+                        mint_token_out: Some(arranged_accounts.destination_mint),
+                        mint_token_account_in: Some(arranged_accounts.source_token_account),
+                        mint_token_account_out: Some(arranged_accounts.destination_token_account),
+                    };
 
-                return Some(swap);
+                    return Some(swap);
+                }
+                JupiterSwapInstruction::SwapEvent(ref data) => {
+                    let swap = SwapTransaction {
+                        amm: None,
+                        in_amount: data.input_amount,
+                        out_amount: Some(data.output_amount),
+                        mint_token_in: Some(data.input_mint),
+                        mint_token_out: Some(data.output_mint),
+                        mint_token_account_in: None,
+                        mint_token_account_out: None,
+                    };
+                    return Some(swap);
+                }
+                JupiterSwapInstruction::ExactOutRoute(ref data) => {
+                    let arranged_accounts = ExactOutRoute::arrange_accounts(&instruction.accounts).unwrap();
+
+                    let swap = SwapTransaction {
+                        amm: None,
+                        in_amount: data.quoted_in_amount,
+                        out_amount: Some(data.out_amount),
+                        mint_token_in: Some(arranged_accounts.source_mint),
+                        mint_token_out: Some(arranged_accounts.user_destination_token_account),
+                        mint_token_account_in: Some(arranged_accounts.user_source_token_account),
+                        mint_token_account_out: Some(arranged_accounts.destination_token_account),
+                    };
+
+                    return Some(swap);
+                }
+                _ => {
+                    return None;
+                }
             }
-            _ => {
-                return None;
-            }
-        },
+        }
         None => {
             return None;
         }
@@ -219,75 +238,73 @@ pub fn decode_okx_instruction(
     };
 
     match decoder.decode_instruction(&instruction) {
-        Some(decoded_instruction) => {
-            match decoded_instruction.data {
-                OkxDexInstruction::Swap(ref swap_data) => {
-                    let arranged_accounts = Swap::arrange_accounts(&instruction.accounts).unwrap();
+        Some(decoded_instruction) => match decoded_instruction.data {
+            OkxDexInstruction::Swap(ref swap_data) => {
+                let arranged_accounts = Swap::arrange_accounts(&instruction.accounts).unwrap();
 
-                    let swap = SwapTransaction {
-                        amm: None,
-                        in_amount: swap_data.data.amount_in,
-                        out_amount: Some(swap_data.data.expect_amount_out),
-                        mint_token_in: Some(arranged_accounts.source_mint),
-                        mint_token_out: Some(arranged_accounts.destination_mint),
-                        mint_token_account_in: Some(arranged_accounts.source_token_account),
-                        mint_token_account_out: Some(arranged_accounts.destination_token_account),
-                    };
+                let swap = SwapTransaction {
+                    amm: None,
+                    in_amount: swap_data.data.amount_in,
+                    out_amount: Some(swap_data.data.expect_amount_out),
+                    mint_token_in: Some(arranged_accounts.source_mint),
+                    mint_token_out: Some(arranged_accounts.destination_mint),
+                    mint_token_account_in: Some(arranged_accounts.source_token_account),
+                    mint_token_account_out: Some(arranged_accounts.destination_token_account),
+                };
 
-                    return Some(swap);
-                }
-                OkxDexInstruction::Swap2(ref swap_data) => {
-                    let arranged_accounts = Swap2::arrange_accounts(&instruction.accounts).unwrap();
-
-                    let swap = SwapTransaction {
-                        amm: None,
-                        in_amount: swap_data.data.amount_in,
-                        out_amount: Some(swap_data.data.expect_amount_out),
-                        mint_token_in: Some(arranged_accounts.source_mint),
-                        mint_token_out: Some(arranged_accounts.destination_mint),
-                        mint_token_account_in: Some(arranged_accounts.source_token_account),
-                        mint_token_account_out: Some(arranged_accounts.destination_token_account),
-                    };
-
-                    return Some(swap);
-                }
-                OkxDexInstruction::CommissionSplSwap(ref swap_data) => {
-                    let arranged_accounts =
-                        CommissionSplSwap::arrange_accounts(&instruction.accounts).unwrap();
-
-                    let swap = SwapTransaction {
-                        amm: None,
-                        in_amount: swap_data.data.amount_in,
-                        out_amount: Some(swap_data.data.expect_amount_out),
-                        mint_token_in: Some(arranged_accounts.source_mint),
-                        mint_token_out: Some(arranged_accounts.destination_mint),
-                        mint_token_account_in: Some(arranged_accounts.source_token_account),
-                        mint_token_account_out: Some(arranged_accounts.destination_token_account),
-                    };
-
-                    return Some(swap);
-                }
-                OkxDexInstruction::CommissionSplSwap2(ref swap_data) => {
-                    let arranged_accounts =
-                        CommissionSplSwap2::arrange_accounts(&instruction.accounts).unwrap();
-
-                    let swap = SwapTransaction {
-                        amm: None,
-                        in_amount: swap_data.data.amount_in,
-                        out_amount: Some(swap_data.data.expect_amount_out),
-                        mint_token_in: Some(arranged_accounts.source_mint),
-                        mint_token_out: Some(arranged_accounts.destination_mint),
-                        mint_token_account_in: Some(arranged_accounts.source_token_account),
-                        mint_token_account_out: Some(arranged_accounts.destination_token_account),
-                    };
-
-                    return Some(swap);
-                }
-                _ => {
-                    return None;
-                }
+                return Some(swap);
             }
-        }
+            OkxDexInstruction::Swap2(ref swap_data) => {
+                let arranged_accounts = Swap2::arrange_accounts(&instruction.accounts).unwrap();
+
+                let swap = SwapTransaction {
+                    amm: None,
+                    in_amount: swap_data.data.amount_in,
+                    out_amount: Some(swap_data.data.expect_amount_out),
+                    mint_token_in: Some(arranged_accounts.source_mint),
+                    mint_token_out: Some(arranged_accounts.destination_mint),
+                    mint_token_account_in: Some(arranged_accounts.source_token_account),
+                    mint_token_account_out: Some(arranged_accounts.destination_token_account),
+                };
+
+                return Some(swap);
+            }
+            OkxDexInstruction::CommissionSplSwap(ref swap_data) => {
+                let arranged_accounts =
+                    CommissionSplSwap::arrange_accounts(&instruction.accounts).unwrap();
+
+                let swap = SwapTransaction {
+                    amm: None,
+                    in_amount: swap_data.data.amount_in,
+                    out_amount: Some(swap_data.data.expect_amount_out),
+                    mint_token_in: Some(arranged_accounts.source_mint),
+                    mint_token_out: Some(arranged_accounts.destination_mint),
+                    mint_token_account_in: Some(arranged_accounts.source_token_account),
+                    mint_token_account_out: Some(arranged_accounts.destination_token_account),
+                };
+
+                return Some(swap);
+            }
+            OkxDexInstruction::CommissionSplSwap2(ref swap_data) => {
+                let arranged_accounts =
+                    CommissionSplSwap2::arrange_accounts(&instruction.accounts).unwrap();
+
+                let swap = SwapTransaction {
+                    amm: None,
+                    in_amount: swap_data.data.amount_in,
+                    out_amount: Some(swap_data.data.expect_amount_out),
+                    mint_token_in: Some(arranged_accounts.source_mint),
+                    mint_token_out: Some(arranged_accounts.destination_mint),
+                    mint_token_account_in: Some(arranged_accounts.source_token_account),
+                    mint_token_account_out: Some(arranged_accounts.destination_token_account),
+                };
+
+                return Some(swap);
+            }
+            _ => {
+                return None;
+            }
+        },
         None => {
             return None;
         }
