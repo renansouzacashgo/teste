@@ -20,6 +20,7 @@ use carbon_okx_dex_decoder::OkxDexDecoder;
 use carbon_raydium_amm_v4_decoder::instructions::swap_base_in::SwapBaseIn;
 use carbon_raydium_amm_v4_decoder::instructions::swap_base_out::SwapBaseOut;
 use carbon_raydium_amm_v4_decoder::instructions::RaydiumAmmV4Instruction;
+
 use carbon_raydium_amm_v4_decoder::RaydiumAmmV4Decoder;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -100,44 +101,44 @@ fn main() {
     // ];
 
     // let data_complex_jupiter=  vec![41, 108, 130, 211, 98, 89, 182, 101, 169, 49, 143, 75, 98, 95, 15, 68, 35, 233, 226, 250, 169, 21, 161, 56, 226, 38, 143, 187, 226, 60, 39, 63, 92, 158, 66, 32, 72, 241, 80, 72, 22, 27, 103, 124, 116, 170, 155, 100];
-    let data_complex_jupiter = vec![193, 32, 155, 51, 65, 214, 156, 129, 6, 2, 0, 0, 0, 7, 100, 0, 1, 72, 100, 1, 2, 213, 240, 86, 18, 134, 0, 0, 0, 208, 8, 105, 243, 3, 0, 0, 0, 84, 1, 85];
+    // let data_complex_jupiter = vec![193, 32, 155, 51, 65, 214, 156, 129, 6, 2, 0, 0, 0, 7, 100, 0, 1, 72, 100, 1, 2, 213, 240, 86, 18, 134, 0, 0, 0, 208, 8, 105, 243, 3, 0, 0, 0, 84, 1, 85];
 
-    let program_id_jupiter = Pubkey::from_str("JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4"); // Exemplo de PROGRA
+    // let program_id_jupiter = Pubkey::from_str("JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4"); // Exemplo de PROGRA
 
-    let accounts_jupiter = [
-        Pubkey::from_str("9CVVvykRbB4zggp1vnZUKqTBKw1742XJ1FVE8rGfAixV").unwrap(),
-        Pubkey::from_str("MjKAkypjNtPcFdyjc4KoderNKnmVuxvzWGxb94WfxZq").unwrap(),
-        Pubkey::from_str("2ndNJTz8Xc7mPYnv5yd1oMF8HYFb9CA7BRRe1cccJrUj").unwrap(),
-        Pubkey::from_str("8JpRt3vBn7VsoESnNrWU1EAGm6Ha8pvAVCvHVLLSrx7Q").unwrap(),
-        Pubkey::from_str("9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8").unwrap(),
-        Pubkey::from_str("A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN").unwrap(),
-        Pubkey::from_str("FGptqdxjahafaCzpZ1T6EDtCzYMv7Dyn5MgBLyB3VUFW").unwrap(),
-        Pubkey::from_str("G55KMKRm78kjeswHep9gctN1Tj8KXh35Fs1jDdFFBUuZ").unwrap(),
-        Pubkey::from_str("JAF1x1owVYpJQAU6iwZfmgRKR5iaQzqXQ9tzXd16DqPo").unwrap(),
-        Pubkey::from_str("11111111111111111111111111111111").unwrap(),
-        Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
-        Pubkey::from_str("JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4").unwrap(),
-        Pubkey::from_str("h5NciPdMZ5QCB5BYETJMYBMpVx9ZuitR6HcVjyBhood").unwrap(),
-        Pubkey::from_str("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL").unwrap(),
-        Pubkey::from_str("AVmoTthdrX6tKt4nDjco2D775W2YK3sDhxPcMmzUAmTY").unwrap(),
-        Pubkey::from_str("D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf").unwrap(),
-        Pubkey::from_str("GjCj8ZMPr13p5XTJJALa7QoRJ1NUWgNcnmhWVgLsQEDr").unwrap(),
-        Pubkey::from_str("J2nUHEAgZFRyuJbFjdqPrAa9gyWDuc7hErtDQHPhsYRp").unwrap(),
-    ];
+    // let accounts_jupiter = [
+    //     Pubkey::from_str("9CVVvykRbB4zggp1vnZUKqTBKw1742XJ1FVE8rGfAixV").unwrap(),
+    //     Pubkey::from_str("MjKAkypjNtPcFdyjc4KoderNKnmVuxvzWGxb94WfxZq").unwrap(),
+    //     Pubkey::from_str("2ndNJTz8Xc7mPYnv5yd1oMF8HYFb9CA7BRRe1cccJrUj").unwrap(),
+    //     Pubkey::from_str("8JpRt3vBn7VsoESnNrWU1EAGm6Ha8pvAVCvHVLLSrx7Q").unwrap(),
+    //     Pubkey::from_str("9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8").unwrap(),
+    //     Pubkey::from_str("A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN").unwrap(),
+    //     Pubkey::from_str("FGptqdxjahafaCzpZ1T6EDtCzYMv7Dyn5MgBLyB3VUFW").unwrap(),
+    //     Pubkey::from_str("G55KMKRm78kjeswHep9gctN1Tj8KXh35Fs1jDdFFBUuZ").unwrap(),
+    //     Pubkey::from_str("JAF1x1owVYpJQAU6iwZfmgRKR5iaQzqXQ9tzXd16DqPo").unwrap(),
+    //     Pubkey::from_str("11111111111111111111111111111111").unwrap(),
+    //     Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
+    //     Pubkey::from_str("JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4").unwrap(),
+    //     Pubkey::from_str("h5NciPdMZ5QCB5BYETJMYBMpVx9ZuitR6HcVjyBhood").unwrap(),
+    //     Pubkey::from_str("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL").unwrap(),
+    //     Pubkey::from_str("AVmoTthdrX6tKt4nDjco2D775W2YK3sDhxPcMmzUAmTY").unwrap(),
+    //     Pubkey::from_str("D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf").unwrap(),
+    //     Pubkey::from_str("GjCj8ZMPr13p5XTJJALa7QoRJ1NUWgNcnmhWVgLsQEDr").unwrap(),
+    //     Pubkey::from_str("J2nUHEAgZFRyuJbFjdqPrAa9gyWDuc7hErtDQHPhsYRp").unwrap(),
+    // ];
 
-    let swap_transaction = match teste::decode_jupiter_instruction(
-        data_complex_jupiter.to_vec(),
-        accounts_jupiter.to_vec(),
-        program_id_jupiter.unwrap(),
-    ) {
-        Some(transaction) => {
-            println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
-        }
-        None => {
-            println!("❌ Erro: Falha ao decodificar a instrução Jupiter.");
-            return; // Ou retorne um valor padrão
-        }
-    };
+    // let swap_transaction = match teste::decode_jupiter_instruction(
+    //     data_complex_jupiter.to_vec(),
+    //     accounts_jupiter.to_vec(),
+    //     program_id_jupiter.unwrap(),
+    // ) {
+    //     Some(transaction) => {
+    //         println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
+    //     }
+    //     None => {
+    //         println!("❌ Erro: Falha ao decodificar a instrução Jupiter.");
+    //         return; // Ou retorne um valor padrão
+    //     }
+    // };
 
     // // OKX TRANSACTION
     // let okx_data = vec![
@@ -160,4 +161,50 @@ fn main() {
     // ];
 
     // decode_okx_instruction(okx_data, accounts_okx.to_vec(), program_id_okx.unwrap());
+
+    // pumpswap teste
+
+    let data_pumpswap = vec![51, 230, 133, 164, 1, 127, 131, 173, 0, 9, 237, 122, 72, 0, 0, 0, 109, 58, 234, 56, 1, 0, 0, 0];
+
+    let program_id_pumpswap = Pubkey::from_str("pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA"); // Exemplo de PROGRA
+
+    let accounts_pumpswap = [
+        Pubkey::from_str("7RJu1AC6L2ocYohCv6Q6Fej2k5aWdsNxPbZH9SXkNUaL").unwrap(),
+        Pubkey::from_str("FfZd4hbNCFBwfPq6pprY6LZBchqbrZgpDc2tehm8zqUc").unwrap(),
+        Pubkey::from_str("ADyA8hdefvWN2dbGGWFotbzWxrAvLW83WG6QCVXvJKqw").unwrap(),
+        Pubkey::from_str("AKzF8KmQ31t2exifCjSiyE6USuaRz73zY6aUd7PYDrCM").unwrap(),
+        Pubkey::from_str("7TptSdvSXvEt3L6mhLJM3fA7u2FF465mkRocvvytSA4k").unwrap(),
+        Pubkey::from_str("9wCHr6ZmnQ1aFvx5UQXHdhtEma5VTDGWdn6JUrmNGHjk").unwrap(),
+        Pubkey::from_str("DWpvfqzGWuVy9jVSKSShdM2733nrEsnnhsUStYbkj6Nn").unwrap(),
+        Pubkey::from_str("4R7mx3L4U3xfPpspFv7H28BGu4M1NgefYCwpNZsHKbbz").unwrap(),
+        Pubkey::from_str("BB5dnY55FXS1e1NXqZDwCzgdYJdMCj3B92PU6Q5Fb6DT").unwrap(),
+        Pubkey::from_str("12pHu2j2DDShyCVFU7vtSLXga74et9y83VD38mw6XYhB").unwrap(),
+        Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
+        Pubkey::from_str("jitodontfront111111111115111111111111165531").unwrap(),
+        Pubkey::from_str("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL").unwrap(),
+        Pubkey::from_str("So11111111111111111111111111111111111111112").unwrap(),
+        Pubkey::from_str("11111111111111111111111111111111").unwrap(),
+        Pubkey::from_str("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").unwrap(),
+        Pubkey::from_str("pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA").unwrap(),
+        Pubkey::from_str("H6uLH57BVuRLTN4zEpAxPr6E6afw8wnxZvfBZFYJzRgG").unwrap(),
+        Pubkey::from_str("85vdovHhkXnDi98EYMQmD2vXS82jRP1VDDXfkJ38pump").unwrap(),
+        Pubkey::from_str("JCRGumoE9Qi5BBgULTgdgTLjSgkCMSbF62ZZfGs84JeU").unwrap(),
+        Pubkey::from_str("GS4CU59F31iL7aR2Q8zVS8DRrcRnXX1yjQ66TqNVQnaR").unwrap(),
+        Pubkey::from_str("FMue64NAyahSTHkQk1BUvPmjxy8SZUmWNtgi7DNdCwBC").unwrap(),
+    ];
+
+    let swap_transaction = match teste::decode_pumpswap_instruction(
+        data_pumpswap.to_vec(),
+        accounts_pumpswap.to_vec(),
+        program_id_pumpswap.unwrap(),
+    ) {
+        Some(transaction) => {
+            println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
+        }
+        None => {
+            println!("❌ Erro: Falha ao decodificar a instrução Jupiter.");
+            return; // Ou retorne um valor padrão
+        }
+    };
+
 }

@@ -36,3 +36,5 @@ carbon-macros = "0.6.2"
 carbon-okx-dex-decoder = { path = "src/decoders/okx-dex-decoder", version = "0.5.1" }
 carbon-jupiter-swap-decoder = "0.6.2" 
 carbon-raydium-amm-v4-decoder = "0.6.2" 
+carbon-pump-swap-decoder = "0.6.2"
+

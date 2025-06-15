@@ -22,10 +22,18 @@ use carbon_raydium_amm_v4_decoder::instructions::swap_base_in::SwapBaseIn;
 use carbon_raydium_amm_v4_decoder::instructions::swap_base_out::SwapBaseOut;
 use carbon_raydium_amm_v4_decoder::instructions::RaydiumAmmV4Instruction;
 use carbon_raydium_amm_v4_decoder::RaydiumAmmV4Decoder;
+use carbon_pump_swap_decoder::accounts::PumpSwapAccount;
+use carbon_pump_swap_decoder::instructions::buy::Buy;
+use carbon_pump_swap_decoder::instructions::sell::Sell;
+use carbon_pump_swap_decoder::instructions::PumpSwapInstruction;
+use carbon_pump_swap_decoder::PumpSwapDecoder;
+
+
 use serde::{Deserialize, Serialize};
 use solana_sdk::instruction::{AccountMeta, Instruction};
 use solana_sdk::pubkey::Pubkey;
 use std::any::type_name;
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SwapTransaction {
@@ -102,6 +110,75 @@ pub fn decode_raydium_instruction(
         }
     }
 }
+
+
+pub fn decode_pumpswap_instruction(
+    data: Vec<u8>,
+    accounts: Vec<Pubkey>,
+    program_id: Pubkey,
+) -> Option<SwapTransaction> {
+    let decoder = PumpSwapDecoder;
+
+    let account_metas: Vec<AccountMeta> = accounts
+        .iter()
+        .map(|pubkey| AccountMeta {
+            pubkey: *pubkey,
+            is_signer: false,   // Defina como true se a conta for um signatário
+            is_writable: false, // Defina como true se a conta for gravável
+        })
+        .collect();
+
+    let instruction = Instruction {
+        program_id,
+        accounts: account_metas, // Adicione as contas necessárias
+        data: data,              // Adicione os dados da instrução
+    };
+
+    match decoder.decode_instruction(&instruction) {
+        Some(decoded_instruction) => {
+            match decoded_instruction.data {
+                PumpSwapInstruction::Buy(ref data) => {
+                    let arranged_accounts = Buy::arrange_accounts(&instruction.accounts).unwrap();
+
+                    let swap = SwapTransaction {
+                        amm: Some(arranged_accounts.program),
+                        in_amount: data.base_amount_out,
+                        out_amount: Some(data.max_quote_amount_in),
+                        mint_token_in: Some(arranged_accounts.base_mint),
+                        mint_token_out:  Some(arranged_accounts.quote_mint),
+                        mint_token_account_in: Some(arranged_accounts.user_base_token_account),
+                        mint_token_account_out: Some(arranged_accounts.user_quote_token_account),
+                    };
+
+                    return Some(swap);
+                }, 
+                PumpSwapInstruction::Sell(ref data) => {
+                    let arranged_accounts = Sell::arrange_accounts(&instruction.accounts).unwrap();
+
+                    let swap = SwapTransaction {
+                        amm: Some(arranged_accounts.program),
+                        in_amount: data.base_amount_in,
+                        out_amount: Some(data.min_quote_amount_out),
+                        mint_token_in: Some(arranged_accounts.base_mint),
+                        mint_token_out:  Some(arranged_accounts.quote_mint),
+                        mint_token_account_in: Some(arranged_accounts.user_base_token_account),
+                        mint_token_account_out: Some(arranged_accounts.user_quote_token_account),
+                    };
+
+                    return Some(swap);
+                }
+                _ => {
+                    return None;
+                }
+            }
+        }
+        None => {
+            return None;
+        }
+    }
+}
+
+
 
 pub fn decode_jupiter_instruction(
     data: Vec<u8>,
