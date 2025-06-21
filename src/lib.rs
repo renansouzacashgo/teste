@@ -133,21 +133,21 @@ pub fn decode_pumpswap_instruction(
 
     match decoder.decode_instruction(&instruction) {
         Some(decoded_instruction) => match decoded_instruction.data {
-            PumpSwapInstruction::Buy(ref data) => {
-                let arranged_accounts = Buy::arrange_accounts(&instruction.accounts).unwrap();
+            // PumpSwapInstruction::Buy(ref data) => {
+            //     let arranged_accounts = Buy::arrange_accounts(&instruction.accounts).unwrap();
 
-                let swap = SwapTransaction {
-                    amm: Some(arranged_accounts.program),
-                    in_amount: data.base_amount_out,
-                    out_amount: Some(data.max_quote_amount_in),
-                    mint_token_in: Some(arranged_accounts.base_mint),
-                    mint_token_out: Some(arranged_accounts.quote_mint),
-                    mint_token_account_in: Some(arranged_accounts.user_base_token_account),
-                    mint_token_account_out: Some(arranged_accounts.user_quote_token_account),
-                };
+            //     let swap = SwapTransaction {
+            //         amm: Some(arranged_accounts.program),
+            //         in_amount: data.base_amount_out,
+            //         out_amount: Some(data.max_quote_amount_in),
+            //         mint_token_in: Some(arranged_accounts.base_mint),
+            //         mint_token_out: Some(arranged_accounts.quote_mint),
+            //         mint_token_account_in: Some(arranged_accounts.user_base_token_account),
+            //         mint_token_account_out: Some(arranged_accounts.user_quote_token_account),
+            //     };
 
-                return Some(swap);
-            }
+            //     return Some(swap);
+            // }
             PumpSwapInstruction::Sell(ref data) => {
                 let arranged_accounts = Sell::arrange_accounts(&instruction.accounts).unwrap();
 
