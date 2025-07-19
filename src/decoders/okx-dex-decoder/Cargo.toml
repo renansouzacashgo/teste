@@ -9,6 +9,6 @@ edition = { workspace = true }
 crate-type = ["rlib"]
 
 [dependencies]
-carbon-core = "0.6.2"
+carbon-core = "0.9.1"
 serde = { version = "1.0.208", features = ["derive"] }
 solana-sdk = "2.2.1"

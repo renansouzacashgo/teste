@@ -28,6 +28,10 @@ use carbon_raydium_amm_v4_decoder::instructions::swap_base_out::SwapBaseOut;
 use carbon_raydium_amm_v4_decoder::instructions::RaydiumAmmV4Instruction;
 use carbon_raydium_amm_v4_decoder::RaydiumAmmV4Decoder;
 
+use carbon_raydium_launchpad_decoder::instructions::buy_exact_in::BuyExactIn;
+use carbon_raydium_launchpad_decoder::instructions::buy_exact_out::BuyExactOut;
+use carbon_raydium_launchpad_decoder::instructions::RaydiumLaunchpadInstruction;
+use carbon_raydium_launchpad_decoder::RaydiumLaunchpadDecoder;
 use serde::{Deserialize, Serialize};
 use solana_sdk::instruction::{AccountMeta, Instruction};
 use solana_sdk::pubkey::Pubkey;
@@ -78,8 +82,8 @@ pub fn decode_raydium_instruction(
                     out_amount: Some(swap_data.minimum_amount_out),
                     mint_token_in: None,
                     mint_token_out: None,
-                    mint_token_account_in: Some(arranged_accounts.uer_source_token_account),
-                    mint_token_account_out: Some(arranged_accounts.uer_destination_token_account),
+                    mint_token_account_in: Some(arranged_accounts.user_source_token_account),
+                    mint_token_account_out: Some(arranged_accounts.user_destination_token_account),
                 };
 
                 return Some(swap);
@@ -93,8 +97,8 @@ pub fn decode_raydium_instruction(
                     out_amount: Some(swap_data.amount_out),
                     mint_token_in: None,
                     mint_token_out: None,
-                    mint_token_account_in: Some(arranged_accounts.uer_source_token_account),
-                    mint_token_account_out: Some(arranged_accounts.uer_destination_token_account),
+                    mint_token_account_in: Some(arranged_accounts.user_source_token_account),
+                    mint_token_account_out: Some(arranged_accounts.user_destination_token_account),
                 };
 
                 return Some(swap);
@@ -512,3 +516,68 @@ pub fn decode_okx_instruction(
         }
     }
 }
+
+pub fn decode_raydiumlaunchpad_instruction(
+    okx_data: Vec<u8>,
+    accounts: Vec<Pubkey>,
+    program_id: Pubkey,
+) -> Option<SwapTransaction> {
+    let decoder = RaydiumLaunchpadDecoder;
+
+    let account_metas: Vec<AccountMeta> = accounts
+        .iter()
+        .map(|pubkey| AccountMeta {
+            pubkey: *pubkey,
+            is_signer: false,   // Defina como true se a conta for um signatário
+            is_writable: false, // Defina como true se a conta for gravável
+        })
+        .collect();
+
+    let instruction = Instruction {
+        program_id,
+        accounts: account_metas, // Adicione as contas necessárias
+        data: okx_data,          // Adicione os dados da instrução
+    };
+
+    match decoder.decode_instruction(&instruction) {
+        Some(decoded_instruction) => match decoded_instruction.data {
+            RaydiumLaunchpadInstruction::BuyExactIn(ref swap_data) => {
+                let arranged_accounts = BuyExactIn::arrange_accounts(&instruction.accounts).unwrap();
+
+                let swap = SwapTransaction {
+                    amm: None,
+                    in_amount: swap_data.amount_in,
+                    out_amount: Some(swap_data.minimum_amount_out),
+                    mint_token_in: Some(arranged_accounts.base_token_mint),
+                    mint_token_out: Some(arranged_accounts.quote_token_mint),
+                    mint_token_account_in: Some(arranged_accounts.user_base_token),
+                    mint_token_account_out: Some(arranged_accounts.user_quote_token),
+                };
+
+                return Some(swap);
+            },
+            RaydiumLaunchpadInstruction::BuyExactOut(ref swap_data) => {
+                let arranged_accounts = BuyExactOut::arrange_accounts(&instruction.accounts).unwrap();
+
+                let swap = SwapTransaction {
+                    amm: None,
+                    in_amount: swap_data.amount_out,
+                    out_amount: Some(swap_data.maximum_amount_in),
+                    mint_token_in: Some(arranged_accounts.base_token_mint),
+                    mint_token_out: Some(arranged_accounts.quote_token_mint),
+                    mint_token_account_in: Some(arranged_accounts.user_base_token),
+                    mint_token_account_out: Some(arranged_accounts.user_quote_token),
+                };
+
+                return Some(swap);
+            }
+            _ => {
+                return None;
+            }
+        },
+        None => {
+            return None;
+        }
+    }
+}
+

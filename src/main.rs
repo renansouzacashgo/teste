@@ -76,19 +76,19 @@ fn main() {
 
     let program_id_raydium = Pubkey::from_str("675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"); // Exemplo de PROGRA
 
-    // let swap_transaction = match teste::decode_raydium_instruction(
-    //     data_simple_2.to_vec(),
-    //     accounts_raydium.to_vec(),
-    //     program_id_raydium.unwrap(),
-    // ) {
-    //     Some(transaction) => {
-    //         println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
-    //     }
-    //     None => {
-    //         println!("❌ Erro: Falha ao decodificar a instrução Raydium.");
-    //         return; // Ou retorne um valor padrão
-    //     }
-    // };
+    let swap_transaction = match teste::decode_raydium_instruction(
+        data_simple_2.to_vec(),
+        accounts_raydium.to_vec(),
+        program_id_raydium.unwrap(),
+    ) {
+        Some(transaction) => {
+            println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
+        }
+        None => {
+            println!("❌ Erro: Falha ao decodificar a instrução Raydium.");
+            return; // Ou retorne um valor padrão
+        }
+    };
 
     // println!("{}", serde_json::to_string_pretty(&parse_swap_data(&data_simple).unwrap()).unwrap());
     // println!("{}", serde_json::to_string_pretty(&parse_swap_jupiter(&data_complex).unwrap()).unwrap());
@@ -140,71 +140,82 @@ fn main() {
     //     }
     // };
 
-    // // OKX TRANSACTION
-    // let okx_data = vec![
-    //     173, 131, 78, 38, 150, 165, 123, 15, 255, 31, 39, 136, 0, 0, 0, 0, 43, 218, 27, 0, 0, 0, 0,
-    //     0, 156, 132, 27, 0, 0, 0, 0, 0, 1, 0, 0, 0, 255, 31, 39, 136, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
-    //     0, 0, 1, 0, 0, 0, 4, 1, 0, 0, 0, 100, 85, 0, 0, 253, 154, 1, 0, 0, 0, 0, 0,
-    // ];
+    // OKX TRANSACTION
+    // let okx_data = vec![69, 164, 210, 89, 146, 214, 173, 67, 192, 36, 192, 158, 12, 0, 0, 0, 198, 82, 32, 15, 0, 0, 0, 0, 161, 153, 249, 14, 0, 0, 0, 0, 1, 0, 0, 0, 192, 36, 192, 158, 12, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 46, 1, 0, 0, 0, 100, 64, 66, 15, 0, 0, 0, 0, 0, 0, 50, 182, 1, 0, 0, 0, 0, 0];
 
     // // // Defina o PROGRAM_ID (substitua pelo valor real)
     // let program_id_okx = Pubkey::from_str("6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma"); // Exemplo de PROGRA
-
+    
     // let accounts_okx = [
-    //     Pubkey::from_str("EmmTYzToovenVxzrFQ8og7NCZU5rG5etYgdBWxnRq6qm").unwrap(),
-    //     Pubkey::from_str("ByEc832xaRvwSgmbdMUG57tBptzYq6EFW2emGFm4HJmv").unwrap(),
-    //     Pubkey::from_str("BDgjLdYBpj1AKW97foiYM1qbXghwLUDDVXaRbbAc41WU").unwrap(),
-    //     Pubkey::from_str("h5NciPdMZ5QCB5BYETJMYBMpVx9ZuitR6HcVjyBhood").unwrap(),
-    //     Pubkey::from_str("So11111111111111111111111111111111111111112").unwrap(),
-    //     Pubkey::from_str("6Wzuv7vLc6Vq8HJcHwwSCE9SKcdJiuoJmJm3EMFkWERN").unwrap(),
+    //     Pubkey::from_str("E5hTCL2cw2uN2ptS7dhecRJmCuyowsQKXo3maQdr3CFX").unwrap(),
+    //     Pubkey::from_str("5eccg3ArzwoiRaqWEBeZLaKfx1PdVkZRY5YNFDbNTazD").unwrap(),
+    //     Pubkey::from_str("7x4VcEX8aLd3kFsNWULTp1qFgVtDwyWSxpTGQkoMM6XX").unwrap(),
+    //     Pubkey::from_str("8sHmeyfT23EZH2h4Mjg2qiS3hvzWM79VDAAZY57UoX43").unwrap(),
+    //     Pubkey::from_str("6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma").unwrap(),
+    //     Pubkey::from_str("85vdovHhkXnDi98EYMQmD2vXS82jRP1VDDXfkJ38pump").unwrap(),
+    //     Pubkey::from_str("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL").unwrap(),
+    //     Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
+    //     Pubkey::from_str("jitodontfront11111111111JustUseJupiterU1tra").unwrap(),
     //     Pubkey::from_str("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").unwrap(),
     // ];
 
-    // decode_okx_instruction(okx_data, accounts_okx.to_vec(), program_id_okx.unwrap());
+    // let swap_transaction = match teste::decode_okx_instruction(
+    //     okx_data,
+    //     accounts_okx.to_vec(),
+    //     program_id_okx.unwrap(),
+    // ) {
+    //     Some(transaction) => {
+    //         println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
+    //     }
+    //     None => {
+    //         println!("❌ Erro: Falha ao decodificar a instrução OKX.");
+    //         return; // Ou retorne um valor padrão
+    //     }
+    // };
 
     // pumpswap teste
 
-    let data_pumpswap = vec![51, 230, 133, 164, 1, 127, 131, 173, 0, 9, 237, 122, 72, 0, 0, 0, 109, 58, 234, 56, 1, 0, 0, 0];
+    // let data_pumpswap = vec![51, 230, 133, 164, 1, 127, 131, 173, 0, 9, 237, 122, 72, 0, 0, 0, 109, 58, 234, 56, 1, 0, 0, 0];
 
-    let program_id_pumpswap = Pubkey::from_str("pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA"); // Exemplo de PROGRA
+    // let program_id_pumpswap = Pubkey::from_str("pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA"); // Exemplo de PROGRA
 
-    let accounts_pumpswap = [
-        Pubkey::from_str("7RJu1AC6L2ocYohCv6Q6Fej2k5aWdsNxPbZH9SXkNUaL").unwrap(),
-        Pubkey::from_str("FfZd4hbNCFBwfPq6pprY6LZBchqbrZgpDc2tehm8zqUc").unwrap(),
-        Pubkey::from_str("ADyA8hdefvWN2dbGGWFotbzWxrAvLW83WG6QCVXvJKqw").unwrap(),
-        Pubkey::from_str("AKzF8KmQ31t2exifCjSiyE6USuaRz73zY6aUd7PYDrCM").unwrap(),
-        Pubkey::from_str("7TptSdvSXvEt3L6mhLJM3fA7u2FF465mkRocvvytSA4k").unwrap(),
-        Pubkey::from_str("9wCHr6ZmnQ1aFvx5UQXHdhtEma5VTDGWdn6JUrmNGHjk").unwrap(),
-        Pubkey::from_str("DWpvfqzGWuVy9jVSKSShdM2733nrEsnnhsUStYbkj6Nn").unwrap(),
-        Pubkey::from_str("4R7mx3L4U3xfPpspFv7H28BGu4M1NgefYCwpNZsHKbbz").unwrap(),
-        Pubkey::from_str("BB5dnY55FXS1e1NXqZDwCzgdYJdMCj3B92PU6Q5Fb6DT").unwrap(),
-        Pubkey::from_str("12pHu2j2DDShyCVFU7vtSLXga74et9y83VD38mw6XYhB").unwrap(),
-        Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
-        Pubkey::from_str("jitodontfront111111111115111111111111165531").unwrap(),
-        Pubkey::from_str("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL").unwrap(),
-        Pubkey::from_str("So11111111111111111111111111111111111111112").unwrap(),
-        Pubkey::from_str("11111111111111111111111111111111").unwrap(),
-        Pubkey::from_str("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").unwrap(),
-        Pubkey::from_str("pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA").unwrap(),
-        Pubkey::from_str("H6uLH57BVuRLTN4zEpAxPr6E6afw8wnxZvfBZFYJzRgG").unwrap(),
-        Pubkey::from_str("85vdovHhkXnDi98EYMQmD2vXS82jRP1VDDXfkJ38pump").unwrap(),
-        Pubkey::from_str("JCRGumoE9Qi5BBgULTgdgTLjSgkCMSbF62ZZfGs84JeU").unwrap(),
-        Pubkey::from_str("GS4CU59F31iL7aR2Q8zVS8DRrcRnXX1yjQ66TqNVQnaR").unwrap(),
-        Pubkey::from_str("FMue64NAyahSTHkQk1BUvPmjxy8SZUmWNtgi7DNdCwBC").unwrap(),
-    ];
+    // let accounts_pumpswap = [
+    //     Pubkey::from_str("7RJu1AC6L2ocYohCv6Q6Fej2k5aWdsNxPbZH9SXkNUaL").unwrap(),
+    //     Pubkey::from_str("FfZd4hbNCFBwfPq6pprY6LZBchqbrZgpDc2tehm8zqUc").unwrap(),
+    //     Pubkey::from_str("ADyA8hdefvWN2dbGGWFotbzWxrAvLW83WG6QCVXvJKqw").unwrap(),
+    //     Pubkey::from_str("AKzF8KmQ31t2exifCjSiyE6USuaRz73zY6aUd7PYDrCM").unwrap(),
+    //     Pubkey::from_str("7TptSdvSXvEt3L6mhLJM3fA7u2FF465mkRocvvytSA4k").unwrap(),
+    //     Pubkey::from_str("9wCHr6ZmnQ1aFvx5UQXHdhtEma5VTDGWdn6JUrmNGHjk").unwrap(),
+    //     Pubkey::from_str("DWpvfqzGWuVy9jVSKSShdM2733nrEsnnhsUStYbkj6Nn").unwrap(),
+    //     Pubkey::from_str("4R7mx3L4U3xfPpspFv7H28BGu4M1NgefYCwpNZsHKbbz").unwrap(),
+    //     Pubkey::from_str("BB5dnY55FXS1e1NXqZDwCzgdYJdMCj3B92PU6Q5Fb6DT").unwrap(),
+    //     Pubkey::from_str("12pHu2j2DDShyCVFU7vtSLXga74et9y83VD38mw6XYhB").unwrap(),
+    //     Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
+    //     Pubkey::from_str("jitodontfront111111111115111111111111165531").unwrap(),
+    //     Pubkey::from_str("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL").unwrap(),
+    //     Pubkey::from_str("So11111111111111111111111111111111111111112").unwrap(),
+    //     Pubkey::from_str("11111111111111111111111111111111").unwrap(),
+    //     Pubkey::from_str("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").unwrap(),
+    //     Pubkey::from_str("pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA").unwrap(),
+    //     Pubkey::from_str("H6uLH57BVuRLTN4zEpAxPr6E6afw8wnxZvfBZFYJzRgG").unwrap(),
+    //     Pubkey::from_str("85vdovHhkXnDi98EYMQmD2vXS82jRP1VDDXfkJ38pump").unwrap(),
+    //     Pubkey::from_str("JCRGumoE9Qi5BBgULTgdgTLjSgkCMSbF62ZZfGs84JeU").unwrap(),
+    //     Pubkey::from_str("GS4CU59F31iL7aR2Q8zVS8DRrcRnXX1yjQ66TqNVQnaR").unwrap(),
+    //     Pubkey::from_str("FMue64NAyahSTHkQk1BUvPmjxy8SZUmWNtgi7DNdCwBC").unwrap(),
+    // ];
 
-    let swap_transaction = match teste::decode_pumpswap_instruction(
-        data_pumpswap.to_vec(),
-        accounts_pumpswap.to_vec(),
-        program_id_pumpswap.unwrap(),
-    ) {
-        Some(transaction) => {
-            println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
-        }
-        None => {
-            println!("❌ Erro: Falha ao decodificar a instrução Jupiter.");
-            return; // Ou retorne um valor padrão
-        }
-    };
+    // let swap_transaction = match teste::decode_pumpswap_instruction(
+    //     data_pumpswap.to_vec(),
+    //     accounts_pumpswap.to_vec(),
+    //     program_id_pumpswap.unwrap(),
+    // ) {
+    //     Some(transaction) => {
+    //         println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
+    //     }
+    //     None => {
+    //         println!("❌ Erro: Falha ao decodificar a instrução Jupiter.");
+    //         return; // Ou retorne um valor padrão
+    //     }
+    // };
 
 }
