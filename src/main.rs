@@ -39,56 +39,56 @@ struct TransactionDataRaydium2 {
 }
 
 fn main() {
-    let data_simple: [u8; 16] = [0, 0, 0, 0, 0, 0, 0, 0, 57, 190, 133, 229, 1, 0, 0, 0];
+    // let data_simple: [u8; 16] = [0, 0, 0, 0, 0, 0, 0, 0, 57, 190, 133, 229, 1, 0, 0, 0];
 
-    let data_simple_2 = vec![
-        9, 73, 193, 244, 52, 125, 0, 0, 0, 0, 195, 157, 208, 0, 0, 0, 0,
-    ];
+    // let data_simple_2 = vec![
+    //     9, 73, 193, 244, 52, 125, 0, 0, 0, 0, 195, 157, 208, 0, 0, 0, 0,
+    // ];
 
-    //2ASD4XtVMFHJn6PwwGVTDaP74gJR5D54JfxjtLoH7zuEzzPX7yRP1Y67qwfS14mi73e15AWqcAZQ9dCYAsa7qvJv
-    //other way with raydium
-    let data_complex_raydium = vec![
-        237, 147, 128, 186, 174, 146, 115, 207, 176, 155, 152, 249, 92, 134, 24, 204, 179, 190, 90,
-        79, 46, 68,
-    ];
+    // //2ASD4XtVMFHJn6PwwGVTDaP74gJR5D54JfxjtLoH7zuEzzPX7yRP1Y67qwfS14mi73e15AWqcAZQ9dCYAsa7qvJv
+    // //other way with raydium
+    // let data_complex_raydium = vec![
+    //     237, 147, 128, 186, 174, 146, 115, 207, 176, 155, 152, 249, 92, 134, 24, 204, 179, 190, 90,
+    //     79, 46, 68,
+    // ];
 
-    // println!("Simple Data:");
+    // // println!("Simple Data:");
 
-    let accounts_raydium = [
-        Pubkey::from_str("2S4SJ9Ffyuvu246xc54buoJg6gZ7wQePoKFwSA3X7Vt3").unwrap(),
-        Pubkey::from_str("4Gf1JjzqiwQopFQSuAEDi5Mo91njca33pkkNudDxGP7o").unwrap(),
-        Pubkey::from_str("4UfgX8reB3eiKVxyeW1soxqAAPi6goc2JwtWGFVw47Dz").unwrap(),
-        Pubkey::from_str("6ehEi3xc5DX3SVPiBpnRwPW3nQJBTzDynA26ce3AnYPp").unwrap(),
-        Pubkey::from_str("7zesqXvg9WeVQCZk84gXAdYJxbrEtMnGyZ6z84yPtDdT").unwrap(),
-        Pubkey::from_str("9CTxEyRStwTKLfVTS6c7rfQc7PTxY42YPdQcrHTv53Ao").unwrap(),
-        Pubkey::from_str("At9hzW9QpTfZbjDQ1d1u742XK6kxRnera7iHuyz9g2MC").unwrap(),
-        Pubkey::from_str("BRYfbo1FHerNTFwhPUu4x4PYHFYovVgBakesXYgKwNhR").unwrap(),
-        Pubkey::from_str("CBie2Q8yT7tnbakYcGRDGYPjbmzVgMe5ZCEVXQamYsAq").unwrap(),
-        Pubkey::from_str("CLJRTMaqkc2oq8jEWKAvshWuwBJLTSpZ6B9SVQ5k3Rb5").unwrap(),
-        Pubkey::from_str("CtYsnSUcikqnLfGpmmDKrCWewXzL1YxpGRmyaZV2X3Fv").unwrap(),
-        Pubkey::from_str("11111111111111111111111111111111").unwrap(),
-        Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
-        Pubkey::from_str("So11111111111111111111111111111111111111112").unwrap(),
-        Pubkey::from_str("h5NciPdMZ5QCB5BYETJMYBMpVx9ZuitR6HcVjyBhood").unwrap(),
-        Pubkey::from_str("5GWu2jYc3SDCnBGqbz6ZHdF8WYbt8WuYpD6aNZynrC7A").unwrap(),
-        Pubkey::from_str("5GWu2jYc3SDCnBGqbz6ZHdF8WYbt8WuYpD6aNZynrC7A").unwrap(),
-    ];
+    // let accounts_raydium = [
+    //     Pubkey::from_str("2S4SJ9Ffyuvu246xc54buoJg6gZ7wQePoKFwSA3X7Vt3").unwrap(),
+    //     Pubkey::from_str("4Gf1JjzqiwQopFQSuAEDi5Mo91njca33pkkNudDxGP7o").unwrap(),
+    //     Pubkey::from_str("4UfgX8reB3eiKVxyeW1soxqAAPi6goc2JwtWGFVw47Dz").unwrap(),
+    //     Pubkey::from_str("6ehEi3xc5DX3SVPiBpnRwPW3nQJBTzDynA26ce3AnYPp").unwrap(),
+    //     Pubkey::from_str("7zesqXvg9WeVQCZk84gXAdYJxbrEtMnGyZ6z84yPtDdT").unwrap(),
+    //     Pubkey::from_str("9CTxEyRStwTKLfVTS6c7rfQc7PTxY42YPdQcrHTv53Ao").unwrap(),
+    //     Pubkey::from_str("At9hzW9QpTfZbjDQ1d1u742XK6kxRnera7iHuyz9g2MC").unwrap(),
+    //     Pubkey::from_str("BRYfbo1FHerNTFwhPUu4x4PYHFYovVgBakesXYgKwNhR").unwrap(),
+    //     Pubkey::from_str("CBie2Q8yT7tnbakYcGRDGYPjbmzVgMe5ZCEVXQamYsAq").unwrap(),
+    //     Pubkey::from_str("CLJRTMaqkc2oq8jEWKAvshWuwBJLTSpZ6B9SVQ5k3Rb5").unwrap(),
+    //     Pubkey::from_str("CtYsnSUcikqnLfGpmmDKrCWewXzL1YxpGRmyaZV2X3Fv").unwrap(),
+    //     Pubkey::from_str("11111111111111111111111111111111").unwrap(),
+    //     Pubkey::from_str("ComputeBudget111111111111111111111111111111").unwrap(),
+    //     Pubkey::from_str("So11111111111111111111111111111111111111112").unwrap(),
+    //     Pubkey::from_str("h5NciPdMZ5QCB5BYETJMYBMpVx9ZuitR6HcVjyBhood").unwrap(),
+    //     Pubkey::from_str("5GWu2jYc3SDCnBGqbz6ZHdF8WYbt8WuYpD6aNZynrC7A").unwrap(),
+    //     Pubkey::from_str("5GWu2jYc3SDCnBGqbz6ZHdF8WYbt8WuYpD6aNZynrC7A").unwrap(),
+    // ];
 
-    let program_id_raydium = Pubkey::from_str("675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"); // Exemplo de PROGRA
+    // let program_id_raydium = Pubkey::from_str("675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"); // Exemplo de PROGRA
 
-    let swap_transaction = match teste::decode_raydium_instruction(
-        data_simple_2.to_vec(),
-        accounts_raydium.to_vec(),
-        program_id_raydium.unwrap(),
-    ) {
-        Some(transaction) => {
-            println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
-        }
-        None => {
-            println!("❌ Erro: Falha ao decodificar a instrução Raydium.");
-            return; // Ou retorne um valor padrão
-        }
-    };
+    // let swap_transaction = match teste::decode_raydium_instruction(
+    //     data_simple_2.to_vec(),
+    //     accounts_raydium.to_vec(),
+    //     program_id_raydium.unwrap(),
+    // ) {
+    //     Some(transaction) => {
+    //         println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
+    //     }
+    //     None => {
+    //         println!("❌ Erro: Falha ao decodificar a instrução Raydium.");
+    //         return; // Ou retorne um valor padrão
+    //     }
+    // };
 
     // println!("{}", serde_json::to_string_pretty(&parse_swap_data(&data_simple).unwrap()).unwrap());
     // println!("{}", serde_json::to_string_pretty(&parse_swap_jupiter(&data_complex).unwrap()).unwrap());
@@ -140,11 +140,11 @@ fn main() {
     //     }
     // };
 
-    // OKX TRANSACTION
+    // // OKX TRANSACTION
     // let okx_data = vec![69, 164, 210, 89, 146, 214, 173, 67, 192, 36, 192, 158, 12, 0, 0, 0, 198, 82, 32, 15, 0, 0, 0, 0, 161, 153, 249, 14, 0, 0, 0, 0, 1, 0, 0, 0, 192, 36, 192, 158, 12, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 46, 1, 0, 0, 0, 100, 64, 66, 15, 0, 0, 0, 0, 0, 0, 50, 182, 1, 0, 0, 0, 0, 0];
 
-    // // // Defina o PROGRAM_ID (substitua pelo valor real)
-    // let program_id_okx = Pubkey::from_str("6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma"); // Exemplo de PROGRA
+    // // // // Defina o PROGRAM_ID (substitua pelo valor real)
+    // // let program_id_okx = Pubkey::from_str("6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma"); // Exemplo de PROGRA
     
     // let accounts_okx = [
     //     Pubkey::from_str("E5hTCL2cw2uN2ptS7dhecRJmCuyowsQKXo3maQdr3CFX").unwrap(),
@@ -172,6 +172,43 @@ fn main() {
     //         return; // Ou retorne um valor padrão
     //     }
     // };
+
+    let accounts_raydiumlaunchpad = [
+        Pubkey::from_str("Hck1nBKknZmW1a5JotomMvC7qmDinj5LqNV56T6WT1LB").unwrap(),
+        Pubkey::from_str("WLHv2UAZm6z4KyaaELi5pjdbJh6RESMva1Rnn8pJVVh").unwrap(),
+        Pubkey::from_str("6s1xP3hpbAfFoNtUNF8mfHsjr2Bd97JxFJRWLbL6aHuX").unwrap(),
+        Pubkey::from_str("FfYek5vEz23cMkWsdJwG2oa6EphsvXSHrGpdALN4g6W1").unwrap(),
+        Pubkey::from_str("9Y5bfAfB7jfPjiWH3tCnbGU6wUXLSXefpbfanvDUh4tp").unwrap(),
+        Pubkey::from_str("7wPkxubdKKcFAxSq6xVHbwi1kwU4Ri8e9tic9Jw9a7qA").unwrap(),
+        Pubkey::from_str("9VjogpTgTCbo3HJwLdUtmbFHZUSZWxghGBMwJr4tLHMx").unwrap(),
+        Pubkey::from_str("3FEvw6MvoABy3sEyxTgx836RoJySJQ1PwcRcQcg7UWMm").unwrap(),
+        Pubkey::from_str("6TZzcf8sqxpyR3sp72UEimVH6RT8Xt9TkiHCoNZhyZeL").unwrap(),
+        Pubkey::from_str("8xQAYsMk7nfyafKimzeJFQnxkKSnnXzpXdBjMDAmbonk").unwrap(),
+        Pubkey::from_str("So11111111111111111111111111111111111111112").unwrap(),
+        Pubkey::from_str("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").unwrap(),
+        Pubkey::from_str("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").unwrap(),
+        Pubkey::from_str("2DPAtwB8L12vrMRExbLuyGnC7n2J5LNoZQSejeQGpwkr").unwrap(),
+        Pubkey::from_str("LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj").unwrap(),
+    ];
+
+    let raydiumlaunchpad_data = vec![250, 234, 13, 123, 213, 156, 19, 236, 64, 66, 15, 0, 0, 0, 0, 0, 161, 150, 246, 24, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    let program_id_launchpad = Pubkey::from_str("LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj"); // Exemplo de PROGRA
+
+
+    let swap_transaction = match teste::decode_raydiumlaunchpad_instruction(
+        raydiumlaunchpad_data,
+        accounts_raydiumlaunchpad.to_vec(),
+        program_id_launchpad.unwrap(),
+    ) {
+        Some(transaction) => {
+            println!("{:?}", transaction); // ✅ Sucesso: pega o valor e imprime
+        }
+        None => {
+            println!("❌ Erro: Falha ao decodificar a instrução OKX.");
+            return; // Ou retorne um valor padrão
+        }
+    };
 
     // pumpswap teste
 
